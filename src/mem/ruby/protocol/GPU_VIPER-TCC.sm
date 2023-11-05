@@ -833,9 +833,9 @@ machine(MachineType:TCC, "TCC Cache")
     p_popRequestQueue;
   }
 
-// Transition to be called when a read request with SLC flag set arrives at
-// entry in state W. It evicts and invalidates the cache entry before
-// forwarding the request to global memory
+  // Transition to be called when a read request with SLC flag set arrives at
+  // entry in state W. It evicts and invalidates the cache entry before
+  // forwarding the request to global memory
   transition(W, RdBypassEvict, WIB) {TagArrayRead} {
     p_profileMiss;
     t_allocateTBE;
@@ -845,9 +845,9 @@ machine(MachineType:TCC, "TCC Cache")
     p_popRequestQueue;
   }
 
-// Transition to be called when a read request with SLC flag set arrives at
-// entry in state M. It evicts and invalidates the cache entry before
-// forwarding the request to global memory to main memory
+  // Transition to be called when a read request with SLC flag set arrives at
+  // entry in state M. It evicts and invalidates the cache entry before
+  // forwarding the request to global memory to main memory
   transition(M, RdBypassEvict, WIB) {TagArrayRead} {
     p_profileMiss;
     t_allocateTBE;
@@ -857,9 +857,9 @@ machine(MachineType:TCC, "TCC Cache")
     p_popRequestQueue;
   }
 
-// Transition to be called when a read request with SLC flag set arrives at
-// entry in state V. It invalidates the cache entry before forwarding the
-// request to global memory.
+  // Transition to be called when a read request with SLC flag set arrives at
+  // entry in state V. It invalidates the cache entry before forwarding the
+  // request to global memory.
   transition(V, RdBypassEvict, I) {TagArrayRead} {
     p_profileMiss;
     t_allocateTBE;
@@ -868,8 +868,8 @@ machine(MachineType:TCC, "TCC Cache")
     p_popRequestQueue;
   }
 
-// Transition to be called when a read request with SLC flag arrives at entry
-// in transient state. The request stalls until the pending transition is complete.
+  // Transition to be called when a read request with SLC flag arrives at entry
+  // in transient state. The request stalls until the pending transition is complete.
   transition({WI, WIB, IV}, RdBypassEvict)  {
     st_stallAndWaitRequest;
   }
@@ -911,7 +911,6 @@ machine(MachineType:TCC, "TCC Cache")
   // The following atomic pass on actions will send the request to the directory,
   // and are triggered when an atomic request is received that is not in TCC,
   // and/or if SLC is set.
-
   transition(V, AtomicPassOn, A) {TagArrayRead} {
     p_profileHit;
     i_invL2;
@@ -988,9 +987,9 @@ machine(MachineType:TCC, "TCC Cache")
     p_popRequestQueue;
   }
 
-// Transition to be called when a write request with SLC bit set arrives at an
-// entry with state V. The entry has to be evicted and invalidated before the
-// request is forwarded to global memory
+  // Transition to be called when a write request with SLC bit set arrives at an
+  // entry with state V. The entry has to be evicted and invalidated before the
+  // request is forwarded to global memory
   transition(V, WrVicBlkEvict, I) {TagArrayRead, TagArrayWrite, DataArrayWrite} {
     p_profileMiss;
     ut_updateTag;
@@ -1000,9 +999,9 @@ machine(MachineType:TCC, "TCC Cache")
     p_popRequestQueue;
   }
 
-// Transition to be called when a write request with SLC bit set arrives at an
-// entry with state W. The entry has to be evicted and invalidated before the
-// request is forwarded to global memory.
+  // Transition to be called when a write request with SLC bit set arrives at an
+  // entry with state W. The entry has to be evicted and invalidated before the
+  // request is forwarded to global memory.
   transition(W, WrVicBlkEvict, I) {TagArrayRead, TagArrayWrite, DataArrayWrite} {
     p_profileMiss;
     ut_updateTag;
@@ -1047,9 +1046,9 @@ machine(MachineType:TCC, "TCC Cache")
     pp_popProbeQueue;
   }
 
-// Transition to be called when the response for a request with SLC bit set
-// arrives. The request has to be forwarded to the core that needs it while
-// making sure no entry is allocated.
+  // Transition to be called when the response for a request with SLC bit set
+  // arrives. The request has to be forwarded to the core that needs it while
+  // making sure no entry is allocated.
   transition(I, Bypass, I) {
     rb_bypassDone;
     pr_popResponseQueue;

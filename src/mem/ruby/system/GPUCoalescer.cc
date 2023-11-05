@@ -38,6 +38,7 @@
 #include "debug/GPUCoalescer.hh"
 #include "debug/MemoryAccess.hh"
 #include "debug/ProtocolTrace.hh"
+#include "debug/RubyHitMiss.hh"
 #include "debug/RubyPort.hh"
 #include "debug/RubyStats.hh"
 #include "gpu-compute/shader.hh"
@@ -437,7 +438,7 @@ GPUCoalescer::writeCallback(Addr address,
     auto crequest = coalescedTable.at(address).front();
 
     hitCallback(crequest, mach, data, true, crequest->getIssueTime(),
-                forwardRequestTime, firstResponseTime, isRegion);
+                forwardRequestTime, firstResponseTime, isRegion, false);
 
     // remove this crequest in coalescedTable
     delete crequest;
@@ -484,29 +485,17 @@ GPUCoalescer::writeCompleteCallback(Addr address,
 void
 GPUCoalescer::readCallback(Addr address, DataBlock& data)
 {
-    readCallback(address, MachineType_NULL, data);
-}
-
-void
-GPUCoalescer::readCallback(Addr address,
-                        MachineType mach,
-                        DataBlock& data)
-{
-    readCallback(address, mach, data, Cycles(0), Cycles(0), Cycles(0));
+    readCallback(address, MachineType_NULL, data, false);
 }
 
 void
 GPUCoalescer::readCallback(Addr address,
                         MachineType mach,
                         DataBlock& data,
-                        Cycles initialRequestTime,
-                        Cycles forwardRequestTime,
-                        Cycles firstResponseTime)
+                        bool externalHit
+                        )
 {
-
-    readCallback(address, mach, data,
-                 initialRequestTime, forwardRequestTime, firstResponseTime,
-                 false);
+    readCallback(address, mach, data, Cycles(0), Cycles(0), Cycles(0), externalHit);
 }
 
 void
@@ -516,7 +505,25 @@ GPUCoalescer::readCallback(Addr address,
                         Cycles initialRequestTime,
                         Cycles forwardRequestTime,
                         Cycles firstResponseTime,
-                        bool isRegion)
+                        bool externalHit
+                        )
+{
+
+    readCallback(address, mach, data,
+                 initialRequestTime, forwardRequestTime, firstResponseTime,
+                 false, externalHit);
+}
+
+void
+GPUCoalescer::readCallback(Addr address,
+                        MachineType mach,
+                        DataBlock& data,
+                        Cycles initialRequestTime,
+                        Cycles forwardRequestTime,
+                        Cycles firstResponseTime,
+                        bool isRegion,
+                        bool externalHit
+                        )
 {
     assert(address == makeLineAddress(address));
     assert(coalescedTable.count(address));
@@ -528,8 +535,10 @@ GPUCoalescer::readCallback(Addr address,
     // Iterate over the coalesced requests to respond to as many loads as
     // possible until another request type is seen. Models MSHR for TCP.
     while (crequest->getRubyType() == RubyRequestType_LD) {
+        DPRINTF(RubyHitMiss, "ReadCallBack GPU Cache %s at %#x\n",
+                externalHit ? "hit" : "miss");
         hitCallback(crequest, mach, data, true, crequest->getIssueTime(),
-                    forwardRequestTime, firstResponseTime, isRegion);
+                    forwardRequestTime, firstResponseTime, isRegion, externalHit);
 
         delete crequest;
         coalescedTable.at(address).pop_front();
@@ -556,7 +565,8 @@ GPUCoalescer::hitCallback(CoalescedRequest* crequest,
                        Cycles initialRequestTime,
                        Cycles forwardRequestTime,
                        Cycles firstResponseTime,
-                       bool isRegion)
+                       bool isRegion,
+                       bool externalHit)
 {
     PacketPtr pkt = crequest->getFirstPkt();
     Addr request_address = pkt->getAddr();
@@ -566,6 +576,9 @@ GPUCoalescer::hitCallback(CoalescedRequest* crequest,
     RubyRequestType type = crequest->getRubyType();
 
     DPRINTF(GPUCoalescer, "Got hitCallback for 0x%X\n", request_line_address);
+    DPRINTF(RubyHitMiss, "GPU Cache %s at %#x\n",
+                         externalHit ? "hit" : "miss",
+                         printAddress(request_address));
 
     recordMissLatency(crequest, mach,
                       initialRequestTime,
@@ -965,7 +978,7 @@ GPUCoalescer::atomicCallback(Addr address,
              "atomicCallback saw non-atomic type response\n");
 
     hitCallback(crequest, mach, (DataBlock&)data, true,
-                crequest->getIssueTime(), Cycles(0), Cycles(0), false);
+                crequest->getIssueTime(), Cycles(0), Cycles(0), false, false);
 
     delete crequest;
     coalescedTable.at(address).pop_front();
