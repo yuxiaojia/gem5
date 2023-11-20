@@ -1,0 +1,61 @@
+Global frequency set at 1000000000000 ticks per second
+Forcing maxCoalescedReqs to 32 (TLB assoc.) 
+Forcing maxCoalescedReqs to 32 (TLB assoc.) 
+Forcing maxCoalescedReqs to 32 (TLB assoc.) 
+Forcing maxCoalescedReqs to 32 (TLB assoc.) 
+Forcing maxCoalescedReqs to 32 (TLB assoc.) 
+Forcing maxCoalescedReqs to 32 (TLB assoc.) 
+Forcing maxCoalescedReqs to 32 (TLB assoc.) 
+Forcing maxCoalescedReqs to 32 (TLB assoc.) 
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version DEVELOP-FOR-23.1
+gem5 compiled Nov 19 2023 12:06:45
+gem5 started Nov 20 2023 02:41:28
+gem5 executing on cc8c3d5cb926, pid 1
+command line: build/VEGA_X86/gem5.opt --debug-flag=GPUKernelInfo configs/example/apu_se.py -n 3 --dgpu --gfx-version=gfx900 --num-compute-units=4 --cu-per-sa=4 --num-gpu-complex=1 --reg-alloc-policy=dynamic --num-tccs=8 --num-dirs=64 --mem-size=16GB --mem-type=HBM_2000_4H_1x64 --vreg-file-size=16384 --sreg-file-size=800 --tcc-size=256kB --gpu-clock=1801MHz --ruby-clock=1000MHz --vrf_lm_bus_latency=6 --mem-req-latency=69 --mem-resp-latency=69 --mandatory_queue_latency=1 --max-cu-tokens=160 --max-coalesces-per-cycle=10 --sqc-size=16kB --tcp-size=512B --scalar-mem-req-latency=28 --TCP_latency=4 --tcp-assoc=4 --tcp-num-banks=16 --TCC_latency=121 --tcc-assoc=16 --tcc-tag-access-latency=1 --tcc-data-access-latency=1 --tcp-rp=SecondChanceRP --WB_L2 --tcc-rp=SecondChanceRP -c gpu_test_no_wait/second_chance_test_1
+
+info: Standard input is not a terminal, disabling listeners.
+Num SQC =  1 Num scalar caches =  1 Num CU =  4
+159536668001: system.cpu0.workload.drivers0.device: Kernel name: Blit kernel
+159537178681: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542039370: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542041590: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542043810: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542052690: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542072670: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542074890: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542081550: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542083770: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542090430: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542092650: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542108190: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542110410: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542117070: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542119290: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542121510: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542123730: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542125950: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542128170: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542130390: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542132610: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542134830: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542137050: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542139270: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542141490: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542143710: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542145930: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542148150: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542150370: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542152590: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542154810: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542157030: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159542159250: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 0
+159544774410: system.cpu0.workload.drivers0.device.dispatcher: Completed kernel 0
+160566668001: system.cpu0.workload.drivers0.device: Kernel name: Blit kernel
+160567169326: system.cpu0.workload.drivers0.device.dispatcher: Launched kernel 1
+160570825665: system.cpu0.workload.drivers0.device.dispatcher: Completed kernel 1
+Dummy value = 0
+Ticks: 167658896500
+Exiting because  exiting with last active thread context
