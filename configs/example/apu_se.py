@@ -1,3 +1,6 @@
+
+
+
 # Copyright (c) 2015 Advanced Micro Devices, Inc.
 # All rights reserved.
 #
@@ -1012,3 +1015,4 @@ print("Ticks:", m5.curTick())
 print("Exiting because ", exit_event.getCause())
 
 sys.exit(exit_event.getCode())
+

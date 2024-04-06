@@ -73,13 +73,16 @@ int main(){
     // initialize arr_g with arr
     hipMemcpy(arr_g, arr, CACHE_ENTRIES*sizeof(int), hipMemcpyHostToDevice);
 
+    //m5outstart
     // just want 1 GPU thread to run our kernel
     hipLaunchKernelGGL(kernel, dim3(1), dim3(1), 0, 0, arr_g, dummy_g);
+    hipDeviceSynchronize(); //
+    //m5outend
 
     // copy dummy value back to ensure compiler doesn't optimize out anything
     hipMemcpy(dummy, dummy_g, 1*sizeof(uint64_t), hipMemcpyDeviceToHost);
     printf("Dummy value = %lu\n", dummy[0]);
-
+    //
     hipFree(arr_g);
     hipFree(dummy_g);
     free(arr);

@@ -327,8 +327,10 @@ machine(MachineType:SQC, "GPU SQC (L1 I Cache)")
 
   // added for profiling
   action(uu_profileDataMiss, "\udm", desc="Profile SQC demand miss"){
+    DPRINTF(RubyHitMiss, "in SQC uu_profileDataMiss\n");
     L1cache.profileDemandMiss();
   }
+
 
   action(uu_profileDataHit, "\udh", desc="Profile SQC demand hit"){
     L1cache.profileDemandHit();

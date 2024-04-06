@@ -656,9 +656,27 @@ machine(MachineType:TCP, "GPU TCP (L1 Data Cache)")
     L1cache.profileDemandMiss();
   }
 
+  action(uu_profileDataMissPrintBypass, "\udmb", desc="Profile the demand miss print bypass"){
+    DPRINTF(RubyHitMiss, "in TCP uu_profileDataMiss with Bypass\n");
+  }
+
+  action(uu_profileDataMissPrintNoBypass, "\udmnb", desc="Profile the demand miss print no bypass"){
+    DPRINTF(RubyHitMiss, "in TCP uu_profileDataMiss noBypass\n");
+  }
+
+  action(uu_profileDataMissPrintBypassNoForward, "\udmnbnf", desc="Profile the demand miss print bypass no forward"){
+    DPRINTF(RubyHitMiss, "in TCP uu_profileDataMiss noBypass Noforward\n");
+  }
+
+  action(uu_profileDataMissPrintStoreThrough, "\udmst", desc="Profile the demand miss print storethrough"){
+    DPRINTF(RubyHitMiss, "in TCP uu_profileDataMiss StoreThrough\n");
+  }
+
   action(uu_profileDataHit, "\udh", desc="Profile the demand hit"){
     L1cache.profileDemandHit();
   }
+
+
 
   // Transitions
   // ArrayRead/Write assumptions:
@@ -685,6 +703,7 @@ machine(MachineType:TCP, "GPU TCP (L1 Data Cache)")
   transition(I, Load, IV) {TagArrayRead} {
     t_allocateTBE;
     n_issueRdBlk;
+    uu_profileDataMissPrintNoBypass
     uu_profileDataMiss;
     p_popMandatoryQueue;
   }
@@ -700,6 +719,7 @@ machine(MachineType:TCP, "GPU TCP (L1 Data Cache)")
   // at L1. This transition invalidates any existing entry and forwards the
   // request to L2.
   transition(V, LoadBypassEvict, I) {TagArrayRead, TagArrayWrite} {
+    uu_profileDataMissPrintBypass
     uu_profileDataMiss;
     ic_invCache;
     n_issueRdBlk;
@@ -710,6 +730,7 @@ machine(MachineType:TCP, "GPU TCP (L1 Data Cache)")
   // at L1. Since the entry is invalid, there isn't anything to forward to L2,
   // so just issue read.
   transition(I, LoadBypassEvict) {TagArrayRead, TagArrayWrite} {
+    uu_profileDataMissPrintBypassNoForward
     uu_profileDataMiss;
     n_issueRdBlk;
     p_popMandatoryQueue;
@@ -726,6 +747,7 @@ machine(MachineType:TCP, "GPU TCP (L1 Data Cache)")
     a_allocate;
     dw_dirtyWrite;
     s_storeDoneMiss;
+    uu_profileDataMissPrintStoreThrough
     uu_profileDataMiss;
     wt_writeThrough;
     ic_invCache;

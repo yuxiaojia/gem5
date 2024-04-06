@@ -47,6 +47,7 @@
 #include "debug/HtmMem.hh"
 #include "debug/RubyCache.hh"
 #include "debug/RubyCacheTrace.hh"
+#include "debug/RubyHitMiss.hh"
 #include "debug/RubyResourceStalls.hh"
 #include "debug/RubyStats.hh"
 #include "mem/cache/replacement_policies/weighted_lru_rp.hh"
@@ -775,12 +776,14 @@ void
 CacheMemory::profileDemandHit()
 {
     cacheMemoryStats.m_demand_hits++;
+    //dprintf
 }
 
 void
 CacheMemory::profileDemandMiss()
 {
     cacheMemoryStats.m_demand_misses++;
+    DPRINTF(RubyHitMiss, "profiledemandMiss %d\n",  cacheMemoryStats.m_demand_misses.value());
 }
 
 void
