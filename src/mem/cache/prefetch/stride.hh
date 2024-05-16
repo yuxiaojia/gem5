@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2018 Inria
- * Copyright (c) 2012-2013, 2015, 2022 Arm Limited
+ * Copyright (c) 2012-2013, 2015 ARM Limited
  * All rights reserved
  *
  * The license below extends only to copyright in the software and shall
@@ -105,8 +105,6 @@ class Stride : public Queued
 
     const int degree;
 
-    const int distance;
-
     /**
      * Information used to create a new PC table. All of them behave equally.
      */
@@ -162,7 +160,8 @@ class Stride : public Queued
     Stride(const StridePrefetcherParams &p);
 
     void calculatePrefetch(const PrefetchInfo &pfi,
-                           std::vector<AddrPriority> &addresses) override;
+                           std::vector<AddrPriority> &addresses,
+                           const CacheAccessor &cache) override;
 };
 
 } // namespace prefetch
