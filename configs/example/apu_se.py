@@ -51,6 +51,7 @@ from common import (
     GPUTLBOptions,
     Options,
     Simulation,
+    ObjectList,
 )
 from ruby import Ruby
 
@@ -385,6 +386,7 @@ parser.add_argument(
     type=str,
     default="TreePLRURP",
     help="cache replacement policy" "policy for tcp",
+    choices=ObjectList.rp_list.get_names(),
 )
 
 parser.add_argument(
@@ -392,6 +394,7 @@ parser.add_argument(
     type=str,
     default="TreePLRURP",
     help="cache replacement policy" "policy for tcc",
+    choices=ObjectList.rp_list.get_names(),
 )
 
 # sqc rp both changes sqc rp and scalar cache rp
@@ -400,6 +403,7 @@ parser.add_argument(
     type=str,
     default="TreePLRURP",
     help="cache replacement policy" "policy for sqc",
+    choices=ObjectList.rp_list.get_names(),
 )
 
 Ruby.define_options(parser)

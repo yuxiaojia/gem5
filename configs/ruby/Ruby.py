@@ -255,7 +255,7 @@ def create_system(
             % protocol
         )
     except:
-        print(f"Error: could not create sytem for ruby protocol {protocol}")
+        print(f"Error: could not create system for ruby protocol {protocol}")
         raise
 
     # Create the network topology
